@@ -17,14 +17,14 @@ app.get('/api/news-feed', (req, res) => {
 
   // To query /v2/top-headlines
   // All options passed to topHeadlines are optional, but you need to include at least one of them
-  newsapi.v2
+  return newsapi.v2
     .topHeadlines({
       category: category ? category : 'general',
       country: country ? country : 'us',
     })
     .then((response) => {
       console.log(response)
-      res.send({ status: true, data: response.data })
+      return res.send({ status: true, data: response.data })
     })
 })
 
