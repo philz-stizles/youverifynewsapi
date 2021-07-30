@@ -24,7 +24,7 @@ app.get('/api/news-feed', (req, res) => {
     })
     .then((response) => {
       console.log(response)
-      return res.send({ status: true, data: response.data })
+      res.send({ status: true, data: response.data })
     })
 })
 
