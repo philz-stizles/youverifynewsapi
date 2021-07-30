@@ -12,20 +12,28 @@ app.set('trust proxy', true)
 
 app.use(express.json())
 
-app.get('/api/news-feed', (req, res) => {
+const getNewsFeed = function (country, category) {
+  return new Promise((resolve, reject) => {
+    newsapi.v2
+      .topHeadlines({
+        category: category ? category : 'general',
+        country: country ? country : 'us',
+      })
+      .then((response) => {
+        console.log(response)
+        resolve(response)
+      })
+  })
+}
+
+app.get('/api/news-feed', async (req, res) => {
   const { country, category } = req.query
 
   // To query /v2/top-headlines
   // All options passed to topHeadlines are optional, but you need to include at least one of them
-  return newsapi.v2
-    .topHeadlines({
-      category: category ? category : 'general',
-      country: country ? country : 'us',
-    })
-    .then((response) => {
-      console.log(response)
-      return res.send({ status: true, data: response.data })
-    })
+  const newsFeed = await getNewsFeed(country, category)
+
+  return res.send(newsFeed)
 })
 
 // app.all('*', async (req, res) => {
